@@ -6,15 +6,15 @@ import { Link } from 'react-router-dom';
 
 function NavigationMenu() {
   return (
-    <div className="sidebar d-flex flex-column align-items-center p-3 bg-white" bg="light">
-      <div className="avatar mb-4">
+    <div className="sidebar d-flex flex-column align-items-center  bg-white" bg="light">
+      <div className="avatar mb-4 align-items-center">
         <Image
           src="https://randomuser.me/api/portraits/men/41.jpg"
           roundedCircle
           className="avatar-img"
         />
       </div>
-      <Nav  className="flex-column w-100 nav-links">
+      <Nav  className="flex-column w-100 nav-links align-items-center">
         <Nav.Link eventKey="link-1"><Link to='/orders' className='nav-link' >ПРИХОД</Link></Nav.Link>
         <Nav.Link eventKey="link-2"><Link to='/orders' className='nav-link' >ГРУППЫ</Link></Nav.Link>
         <Nav.Link eventKey="link-3"><Link to='/products' className='nav-link' >ПРОДУКТЫ</Link></Nav.Link>

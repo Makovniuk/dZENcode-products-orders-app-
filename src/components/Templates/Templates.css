@@ -5,7 +5,7 @@
     background-color:rgb(240, 243, 245);
     min-height: calc(100vh - 64px);
     min-width: calc(100vw - 220px); /* учитывать высоту хедера */
-    margin-top: 64px;
+    margin-top: 60px;
   }
   
   /* белая карточка */

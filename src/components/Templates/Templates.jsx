@@ -9,9 +9,7 @@ const Templates = () => {
       <TopMenu />
       <NavigationMenu />
       <div className="main-content">
-        <div className="content-wrapper">
-          <Outlet /> {/* 👈 здесь будет рендериться контент маршрута */}
-        </div>
+        <Outlet /> 
       </div>
     </>
   );
