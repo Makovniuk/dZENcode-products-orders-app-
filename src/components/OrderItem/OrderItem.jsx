@@ -3,9 +3,9 @@ import { Row, Col, Button } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import { BsListUl } from "react-icons/bs";
 
-export default function Orders({ title, productsCount, date, amountUsd, amountUah }) {
+export default function OrderItem({ title, productsCount, date, amountUsd, amountUah }) {
     return (
-        <Card className="mb-3 shadow-sm">
+        <Card className="mb-2 shadow-sm">
             <Card.Body > 
                 <Row className='align-items-center'>
                     <Col md={5}>

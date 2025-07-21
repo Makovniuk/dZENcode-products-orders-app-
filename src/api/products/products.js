@@ -1,7 +1,7 @@
 import axios from '../service';
 
-const orders = {
-  get: () => axios.get('/orders')
+const products = {
+  get: () => axios.get('/products')
     .then(({ data }) => data)
     .catch((err) => {
       throw new Error(err);
@@ -13,4 +13,4 @@ const orders = {
     }),
 };
 
-export { orders };
+export { products };

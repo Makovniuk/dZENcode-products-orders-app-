@@ -1,0 +1,11 @@
+.scroll-x {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .product-item-wrapper {
+    display: inline-block;
+    min-width: 1200px; /* адаптируй под свою ширину */
+    vertical-align: top;
+  }
+  
