@@ -1,10 +1,16 @@
 import Card from 'react-bootstrap/Card';
+import React, { useState } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import { BsListUl } from "react-icons/bs";
+import DeleteConfirmationModal from '../DeleteOrderModal/DeleteOrderModal'
+
 
 export default function OrderItem({ title, productsCount, date, amountUsd, amountUah }) {
+    const [show, setShow] = useState(false);
+
     return (
+        <>
         <Card className="mb-2 shadow-sm">
             <Card.Body > 
                 <Row className='align-items-center'>
@@ -28,14 +34,23 @@ export default function OrderItem({ title, productsCount, date, amountUsd, amoun
                         <div>{amountUah ? `${amountUah} грн` : null}</div>
                     </Col>
                     <Col md={1} className="text-end">
-                        <Button variant="light" size="sm">
+                        <Button variant="light" size="sm" onClick={() => setShow(true)}>
                             <FaTrash />
                         </Button>
                     </Col>
                 </Row>
             </Card.Body>
-        </Card>
-        
-        
+        </Card>   
+        {show && <DeleteConfirmationModal
+            show={show}
+            handleClose={() => setShow(false)}
+            handleDelete={() => {
+              console.log('Удалено!');
+              setShow(false);
+            }}
+            item={title}
+          />
+        }
+        </>
     );
 }

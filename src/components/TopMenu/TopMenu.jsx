@@ -3,14 +3,26 @@ import Navbar from "react-bootstrap/Navbar";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import { io } from "socket.io-client";
 import "./TopMenu.css";
 
 const TopMenu = () => {
   const [time, setTime] = useState(new Date());
+  const [sessionCount, setSessionCount] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const socket = io("http://localhost:4000");
+    socket.on("session_count", (count) => {
+      setSessionCount(count);
+    });
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
@@ -39,6 +51,9 @@ const TopMenu = () => {
               year: "numeric",
             })}{" "}
             🕒 {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          </div>
+          <div className="logo small fw-semibold">
+             Активных сессий: {sessionCount}
           </div>
         </div>
       </Container>

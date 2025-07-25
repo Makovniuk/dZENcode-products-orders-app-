@@ -4,11 +4,15 @@ import OrderItem from '../../components/OrderItem/OrderItem'; // путь к т�
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import store from '../../store/store';
 
 const OrdersList = () => {
   const [orderList, setOrderList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const storeData = store.getState();
+  console.log(storeData);
 
   useEffect(() => {
     orders.get()

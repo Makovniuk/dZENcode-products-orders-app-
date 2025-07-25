@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function NavigationMenu() {
   return (
     <div className="sidebar d-flex flex-column align-items-center  bg-white" bg="light">
-      <div className="avatar mb-4 align-items-center">
+      <div className="avatar mb-4 mt-4 align-items-center">
         <Image
           src="https://randomuser.me/api/portraits/men/41.jpg"
           roundedCircle
