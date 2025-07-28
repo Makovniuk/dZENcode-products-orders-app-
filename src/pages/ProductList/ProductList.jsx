@@ -1,32 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { products } from '../../api/products/products';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductsItem from '../../components/ProductsItem/ProductsItem'; 
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import thunks from '../../store/services/products/thunks';
 
 const ProductsList = () => {
-  const [productList, setProductList] = useState([]);
+  const { products } = useSelector((state) => state.productsReducer);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedType, setSelectedType] = useState('');
+
+
+  const fetchProductsList = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      await dispatch(thunks.fetchProducts());
+    } catch (err) {
+      setError(err.message || 'Ошибка при загрузке товаров');
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    products.get()
-      .then((data) => {
-        setProductList(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message || 'Ошибка при загрузке товаров');
-        setLoading(false);
-      });
-  }, []);
+    if (products.length === 0) {
+      fetchProductsList();
+    } else {
+      setLoading(false);
+    }
+  }, [fetchProductsList, products.length]);
+
+
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value);
+  };
+
+  const uniqueTypes = [...new Set(products.map(p => p.type))];
+
+  const filteredProducts = selectedType
+    ? products.filter(p => p.type === selectedType)
+    : products;
 
   if (loading) {
     return (
       <Container className="pt-5 text-center">
         <Spinner animation="border" />
-        <p>Загрузка заказов...</p>
+        <p>Загрузка товаров...</p>
       </Container>
     );
   }
@@ -40,31 +66,47 @@ const ProductsList = () => {
   }
 
   return (
-    <>
-      <h1 className="mb-4">Продукты/ {productList.length} </h1>
-      {productList.length === 0 ? (
-        <Alert variant="info">Нет заказов для отображения</Alert>
+    <Container fluid className="py-3">
+      <Row className="mb-3 align-items-center">
+        <Col md={1} className="mb-3">
+          <h3 className="mb-0">Продукты/{filteredProducts.length}</h3>
+        </Col>
+        <Col md={1} className="mb-3">
+          <p className="mb-0 text-end text-muted">Тип:</p>
+        </Col>
+        <Col md={3}  className="mb-3 text-start">
+          <Form.Select value={selectedType} onChange={handleTypeChange}>
+            <option value="">Все типы</option>
+            {uniqueTypes.map((type, idx) => (
+              <option key={idx} value={type}>{type}</option>
+            ))}
+          </Form.Select>
+        </Col>
+      </Row>
+
+      {filteredProducts.length === 0 ? (
+        <Alert variant="info">Нет товаров для отображения</Alert>
       ) : (
-        productList.map(product => (
+        filteredProducts.map(product => (
           <ProductsItem
-            key = {product.id}
-            title = {product.title}
+            key={product.id}
+            title={product.title}
             status={product.status}
-            isNew = {product.isNew}
-            type = {product.type}
-            serialNumber = {product.serialNumber}
-            dateStart = {product.guarantee.start}
-            dateEnd = {product.guarantee.end}
-            usd = {product.price.find(p => p.symbol === 'USD')?.value}
-            uah = {product.price.find(p => p.symbol === 'UAH')?.value}
-            groupName = 'Длинное предлинное длиннющее название группы'
-            user = '—'
-            arrivalName = 'Длинное предлинное длиннющее название прихода'
-            arrivalDate = {product.date}
+            isNew={product.isNew}
+            type={product.type}
+            serialNumber={product.serialNumber}
+            dateStart={product.guarantee.start}
+            dateEnd={product.guarantee.end}
+            usd={product.price.find(p => p.symbol === 'USD')?.value}
+            uah={product.price.find(p => p.symbol === 'UAH')?.value}
+            groupName="Длинное предлинное длиннющее название группы"
+            user="—"
+            arrivalName="Длинное предлинное длиннющее название прихода"
+            arrivalDate={product.date}
           />
         ))
       )}
-    </>
+    </Container>
   );
 };
 

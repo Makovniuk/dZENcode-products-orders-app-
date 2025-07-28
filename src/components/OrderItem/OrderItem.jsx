@@ -12,17 +12,17 @@ export default function OrderItem({ title, productsCount, date, amountUsd, amoun
     return (
         <>
         <Card className="mb-2 shadow-sm">
-            <Card.Body > 
+            <Card.Body className="py-2" > 
                 <Row className='align-items-center'>
-                    <Col md={5}>
+                    <Col md={3}>
                         <Card.Title className="mb-2 text-truncate">{title}</Card.Title>
                     </Col>
-                    <Col md={1} >
+                    <Col md={2} >
                         <Button variant="light" size="lg">
                             <BsListUl />
                         </Button>
                     </Col>
-                    <Col md={1}>
+                    <Col md={2}>
                         <div className="text-muted"><h4>{productsCount}</h4> Продукта</div>
                     </Col>
                     <Col md={2}>
