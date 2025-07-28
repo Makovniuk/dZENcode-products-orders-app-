@@ -1,30 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { orders } from '../../api/orders/orders';
-import OrderItem from '../../components/OrderItem/OrderItem'; // путь к твоему компоненту
+import React, { useEffect, useState, useCallback} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import OrderItem from '../../components/OrderItem/OrderItem';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
-import store from '../../store/store';
+import thunks from '../../store/services/orders/thunks';
 
 const OrdersList = () => {
-  const [orderList, setOrderList] = useState([]);
+  const { orders } = useSelector((state) => state.ordersReducer);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const storeData = store.getState();
-  console.log(storeData);
+  const fetchOrdersList = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      await dispatch(thunks.fetchOrders());
+    } catch (err) {
+      setError(err.message || 'Ошибка при загрузке товаров');
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    orders.get()
-      .then((data) => {
-        setOrderList(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message || 'Ошибка при загрузке заказов');
-        setLoading(false);
-      });
-  }, []);
+    if (orders.length === 0) {
+      fetchOrdersList();
+    } else {
+      setLoading(false);
+    }
+  }, [fetchOrdersList, orders.length]);
 
   if (loading) {
     return (
@@ -45,11 +51,11 @@ const OrdersList = () => {
 
   return (
     <>
-      <h1 className="mb-4">Приходы / {orderList.length} </h1>
-      {orderList.length === 0 ? (
+      <h1 className="mb-4">Приходы / {orders.length} </h1>
+      {orders.length === 0 ? (
         <Alert variant="info">Нет заказов для отображения</Alert>
       ) : (
-        orderList.map(order => (
+        orders.map(order => (
           <OrderItem
             key={order.id}
             title={order.title}
