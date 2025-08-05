@@ -45,7 +45,7 @@ export default function ProductsItem({
           </Col>
 
           {/* Даты */}
-          <Col xs={1}>
+          <Col xs={2}>
             <div className="small text-muted">С {dateStart}</div>
             <div className="small text-muted">По {dateEnd}</div>
           </Col>
@@ -61,7 +61,7 @@ export default function ProductsItem({
           </Col>
 
           {/* Группа */}
-          <Col xs={2}>
+          <Col xs={1}>
             <div className="text-truncate">{groupName}</div>
             <div className="small text-muted">{user}</div>
           </Col>

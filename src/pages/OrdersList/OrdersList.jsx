@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useCallback} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderItem from '../../components/OrderItem/OrderItem';
+import ProductsPanelList from '../../components/ProductsPanelList/ProductsPanelList';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
@@ -11,14 +12,14 @@ const OrdersList = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedOrderId, setSelectedOrderId] = useState(null); // ⬅️ ID открытой панели
 
   const fetchOrdersList = useCallback(async () => {
     setLoading(true);
-
     try {
       await dispatch(thunks.fetchOrders());
     } catch (err) {
-      setError(err.message || 'Ошибка при загрузке товаров');
+      setError(err.message || 'Ошибка при загрузке заказов');
     } finally {
       setLoading(false);
     }
@@ -49,24 +50,62 @@ const OrdersList = () => {
     );
   }
 
+  const selectedOrder = orders.find(order => order.id === selectedOrderId);
+
+
   return (
-    <>
-      <h1 className="mb-4">Приходы / {orders.length} </h1>
-      {orders.length === 0 ? (
-        <Alert variant="info">Нет заказов для отображения</Alert>
-      ) : (
-        orders.map(order => (
-          <OrderItem
-            key={order.id}
-            title={order.title}
-            productsCount={order.productsCount}
-            date={order.data}
-            amountUsd={order.priceUSD}
-            amountUah={order.priceUAH}
-          />
-        ))
-      )}
-    </>
+    <div>
+    <h1 className="mb-4">Приходы / {orders.length}</h1>
+
+    {orders.length === 0 ? (
+      <Alert variant="info">Нет заказов для отображения</Alert>
+    ) : (
+      <div className="d-flex align-items-start gap-4">
+        {/* Левая колонка: список заказов */}
+        <div className="flex-grow-1">
+          {orders.map((order) => (
+            <OrderItem
+              key={order.id}
+              title={order.title}
+              productsCount={order.productsCount}
+              date={order.data}
+              amountUsd={order.priceUSD}
+              amountUah={order.priceUAH}
+              id={order.id}
+              isExpanded={selectedOrderId === order.id}
+              isAnyExpanded={Boolean(selectedOrderId)}
+              onToggle={() =>
+                setSelectedOrderId(
+                  selectedOrderId === order.id ? null : order.id
+                )
+              }
+            />
+          ))}
+        </div>
+
+        {/* Правая колонка: список продуктов */}
+        {selectedOrderId && (
+          <div
+            style={{
+              width: '700px',
+              maxHeight: '80vh',
+              overflowY: 'auto',
+              backgroundColor: '#fff',
+              boxShadow: '0 0 15px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
+              padding: '1rem',
+            }}
+          >
+            <ProductsPanelList
+              orderId={selectedOrderId}
+              title={selectedOrder?.title}
+              onClose={() => setSelectedOrderId(null)}
+            />
+          </div>
+        )}
+      </div>
+    )}
+  </div>
   );
 };
 

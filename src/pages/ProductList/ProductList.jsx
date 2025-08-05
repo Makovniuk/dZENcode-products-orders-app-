@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ProductsItem from '../../components/ProductsItem/ProductsItem'; 
+import ProductsItem from '../../components/ProductsItem/ProductsItem';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
@@ -9,16 +9,17 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import thunks from '../../store/services/products/thunks';
 
-const ProductsList = () => {
-  const { products } = useSelector((state) => state.productsReducer);
+const ProductsList = ({ orderId }) => {
   const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.productsReducer);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState('');
 
-
   const fetchProductsList = useCallback(async () => {
     setLoading(true);
+    setError(null);
 
     try {
       await dispatch(thunks.fetchProducts());
@@ -30,23 +31,26 @@ const ProductsList = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (products.length === 0) {
-      fetchProductsList();
-    } else {
-      setLoading(false);
-    }
-  }, [fetchProductsList, products.length]);
-
+    fetchProductsList();
+  }, [fetchProductsList]);
 
   const handleTypeChange = (e) => {
     setSelectedType(e.target.value);
   };
 
-  const uniqueTypes = [...new Set(products.map(p => p.type))];
+  // 🔹 Фильтрация по orderId
+  const productsForOrder = orderId
+  ? products.filter(product => product.order === orderId)
+  : products;
+  console.log(orderId, productsForOrder);
 
+  // 🔹 Уникальные типы из продуктов конкретного заказа
+  const uniqueTypes = [...new Set(productsForOrder.map(p => p.type))];
+
+  // 🔹 Фильтрация по типу
   const filteredProducts = selectedType
-    ? products.filter(p => p.type === selectedType)
-    : products;
+    ? productsForOrder.filter(p => p.type === selectedType)
+    : productsForOrder;
 
   if (loading) {
     return (
@@ -67,6 +71,7 @@ const ProductsList = () => {
 
   return (
     <Container fluid className="py-3">
+      {!orderId &&
       <Row className="mb-3 align-items-center">
         <Col md={1} className="mb-3">
           <h3 className="mb-0">Продукты/{filteredProducts.length}</h3>
@@ -74,7 +79,7 @@ const ProductsList = () => {
         <Col md={1} className="mb-3">
           <p className="mb-0 text-end text-muted">Тип:</p>
         </Col>
-        <Col md={3}  className="mb-3 text-start">
+        <Col md={3} className="mb-3 text-start">
           <Form.Select value={selectedType} onChange={handleTypeChange}>
             <option value="">Все типы</option>
             {uniqueTypes.map((type, idx) => (
@@ -83,7 +88,7 @@ const ProductsList = () => {
           </Form.Select>
         </Col>
       </Row>
-
+}
       {filteredProducts.length === 0 ? (
         <Alert variant="info">Нет товаров для отображения</Alert>
       ) : (
