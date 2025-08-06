@@ -6,18 +6,21 @@ import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import thunks from '../../store/services/orders/thunks';
+import productsThunks from '../../store/services/products/thunks';
 
 const OrdersList = () => {
   const { orders } = useSelector((state) => state.ordersReducer);
+  const { products } = useSelector((state) => state.productsReducer);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOrderId, setSelectedOrderId] = useState(null); // ⬅️ ID открытой панели
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  const fetchOrdersList = useCallback(async () => {
+  const fetchAllData = useCallback(async () => {
     setLoading(true);
     try {
       await dispatch(thunks.fetchOrders());
+      await dispatch(productsThunks.fetchProducts());
     } catch (err) {
       setError(err.message || 'Ошибка при загрузке заказов');
     } finally {
@@ -27,11 +30,11 @@ const OrdersList = () => {
 
   useEffect(() => {
     if (orders.length === 0) {
-      fetchOrdersList();
+      fetchAllData();
     } else {
       setLoading(false);
     }
-  }, [fetchOrdersList, orders.length]);
+  }, [fetchAllData, orders.length]);
 
   if (loading) {
     return (
@@ -52,6 +55,19 @@ const OrdersList = () => {
 
   const selectedOrder = orders.find(order => order.id === selectedOrderId);
 
+  const quantityProducts = (orderId) => {
+    const productsCount = products.filter(p => p.order === orderId);
+    return productsCount.length;
+  };
+
+  const getOrderTotal = (orderId, currency = 'USD') => {
+    const orderProducts = products.filter(p => p.order === orderId);
+  
+    return orderProducts.reduce((sum, product) => {
+      const priceEntry = product.price?.find(p => p.symbol === currency);
+      return sum + (priceEntry?.value || 0);
+    }, 0);
+  };
 
   return (
     <div>
@@ -61,16 +77,15 @@ const OrdersList = () => {
       <Alert variant="info">Нет заказов для отображения</Alert>
     ) : (
       <div className="d-flex align-items-start gap-4">
-        {/* Левая колонка: список заказов */}
         <div className="flex-grow-1">
           {orders.map((order) => (
             <OrderItem
               key={order.id}
               title={order.title}
-              productsCount={order.productsCount}
+              productsCount={quantityProducts(order.id)}
               date={order.data}
-              amountUsd={order.priceUSD}
-              amountUah={order.priceUAH}
+              amountUsd={getOrderTotal(order.id, 'USD')}
+              amountUah={getOrderTotal(order.id, 'UAH')}
               id={order.id}
               isExpanded={selectedOrderId === order.id}
               isAnyExpanded={Boolean(selectedOrderId)}
@@ -83,9 +98,8 @@ const OrdersList = () => {
           ))}
         </div>
 
-        {/* Правая колонка: список продуктов */}
         {selectedOrderId && (
-          <div
+        <div
             style={{
               width: '700px',
               maxHeight: '80vh',
@@ -100,8 +114,8 @@ const OrdersList = () => {
               orderId={selectedOrderId}
               title={selectedOrder?.title}
               onClose={() => setSelectedOrderId(null)}
-            />
-          </div>
+          />
+        </div>
         )}
       </div>
     )}

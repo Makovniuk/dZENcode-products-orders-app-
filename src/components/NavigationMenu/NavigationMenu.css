@@ -1,9 +1,9 @@
 .sidebar {
     position: fixed;
-    top: 64px; /* высота Navbar */
+    top: 64px;
     left: 0;
     width: 220px;
-    height: calc(100vh - 64px); /* занимает всю высоту окна минус хедер */
+    height: calc(100vh - 64px);
     background-color: #fff;
     border-right: 1px solid #eaeaea;
     padding-top: 1rem;

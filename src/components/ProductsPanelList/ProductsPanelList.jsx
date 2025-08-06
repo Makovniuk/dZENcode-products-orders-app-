@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { Badge, Alert, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import { FaPlus, FaTimes, FaTrash, FaCircle  } from 'react-icons/fa';
 import thunks from '../../store/services/products/thunks';
 import './ProductsPanelList.css';
-import { Badge } from 'react-bootstrap';
+
 
 const ProductsPanelList = ({ orderId, title, onClose }) => {
   const dispatch = useDispatch();
@@ -39,7 +35,6 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
 
   return (
     <div className="products-panel-wrapper p-3 bg-white rounded shadow-sm position-relative mb-3">
-      {/* ❌ Кнопка закрытия */}
       <button
         className="close-button"
         onClick={onClose}
@@ -47,10 +42,7 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
       >
         <FaTimes />
       </button>
-
-      {/* 🔹 Верхняя панель с кнопкой добавления */}
       <div className="d-flex-col justify-content-between align-items-center mb-3">
-        
          <h5 className="mb-0 text-truncate fw-semibold mb-3">
          {title}
         </h5>
@@ -61,8 +53,6 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
           <span className="fw-semibold" style={{ color: 'rgb(134, 190, 72)' }}>Добавить продукт</span>
         </Button>
       </div>
-
-      {/* 🔹 Список продуктов */}
       <div className="products-list">
         {loading ? (
           <div className="text-center py-4">

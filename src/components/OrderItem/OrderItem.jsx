@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import { BsListUl } from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
 import DeleteConfirmationModal from '../DeleteOrderModal/DeleteOrderModal';
-import ProductsPanelList from '../ProductsPanelList/ProductsPanelList';
 
 export default function OrderItem({
   title,
@@ -12,7 +12,6 @@ export default function OrderItem({
   date,
   amountUsd,
   amountUah,
-  id,
   isExpanded,
   isAnyExpanded,
   onToggle
@@ -95,7 +94,6 @@ export default function OrderItem({
         </Card>
       </div>
 
-      {/* ✅ Модалка удаления */}
       {showModalDelete && (
         <DeleteConfirmationModal
           show={showModalDelete}

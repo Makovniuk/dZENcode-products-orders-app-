@@ -1,14 +1,13 @@
-/* отступ под фиксированный хедер */
+
 .main-content {
-    margin-left: 220px; /* ширина сайдбара */
+    margin-left: 220px; 
     padding: 2rem;
     background-color:rgb(240, 243, 245);
     min-height: calc(100vh - 64px);
-    min-width: calc(100vw - 220px); /* учитывать высоту хедера */
+    min-width: calc(100vw - 220px); 
     margin-top: 60px;
   }
   
-  /* белая карточка */
   .content-wrapper {
     background-color: #fff;
     padding: 1.5rem;

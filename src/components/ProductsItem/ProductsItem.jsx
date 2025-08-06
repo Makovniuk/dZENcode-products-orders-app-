@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col, Badge, Button } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import { FaTrash } from 'react-icons/fa';
-import { FaCircle } from "react-icons/fa"; // для иконки статуса
+import { FaCircle } from "react-icons/fa";
 
 export default function ProductsItem({
   status,
@@ -22,7 +22,6 @@ export default function ProductsItem({
     <Card className="mb-2 shadow-sm ">
       <Card.Body className="py-2">
         <Row className="align-items-center">
-          {/* Статусный кружок */}
           <Col xs={1} className="text-center">
             <FaCircle color={status === 'Свободен' ? 'green' : 'orange'} size={15} />
           </Col>
@@ -33,46 +32,32 @@ export default function ProductsItem({
             className="avatar-img"
           />
           </Col>
-          {/* Информация о товаре */}
           <Col xs={2}>
             <div className="fw-bold">{type}</div>
             <div className="text-muted small">{serialNumber}</div>
           </Col>
-
-          {/* Статус */}
           <Col xs={1}>
             <Badge bg={status === 'Свободен' ? 'success' : 'warning'}>{status}</Badge>
           </Col>
-
-          {/* Даты */}
           <Col xs={2}>
             <div className="small text-muted">С {dateStart}</div>
             <div className="small text-muted">По {dateEnd}</div>
           </Col>
-
           <Col xs={1}>
             <div>{isNew ? 'Новый' : 'Б/У'}</div>
           </Col>
-
-          {/* Цена */}
           <Col xs={1}>
             <div>{usd} $</div>
             <div>{uah} грн</div>
           </Col>
-
-          {/* Группа */}
           <Col xs={1}>
             <div className="text-truncate">{groupName}</div>
             <div className="small text-muted">{user}</div>
           </Col>
-
-          {/* Приход */}
           <Col xs={1}>
             <div className=" text-truncate">{arrivalName}</div>
             <div className="text-muted small">{arrivalDate}</div>
           </Col>
-
-          {/* Действие */}
           <Col xs={1} className="text-end">
             <Button variant="light" size="sm">
               <FaTrash />

@@ -15,7 +15,6 @@ export default  function DeleteOrderModal({ show, handleClose, handleDelete, ite
       <Modal.Body className="pt-1">
         <Row className="align-items-center">
           <Col xs="auto" className="d-flex align-items-center">
-            {/* Зелёная точка */}
             <span
               style={{
                 display: 'inline-block',
@@ -42,12 +41,11 @@ export default  function DeleteOrderModal({ show, handleClose, handleDelete, ite
       <div
         className="d-flex justify-content-between align-items-center px-4 py-3"
         style={{
-          backgroundColor: '#77c043', // зелёный как на скрине
+          backgroundColor: '#77c043', 
           borderBottomLeftRadius: '0.3rem',
           borderBottomRightRadius: '0.3rem',
         }}
       >
-        {/* Кнопка отмена */}
         <Button
           variant="light"
           className="fw-bold px-4"

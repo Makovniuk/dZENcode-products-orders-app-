@@ -38,16 +38,13 @@ const ProductsList = ({ orderId }) => {
     setSelectedType(e.target.value);
   };
 
-  // 🔹 Фильтрация по orderId
   const productsForOrder = orderId
   ? products.filter(product => product.order === orderId)
   : products;
   console.log(orderId, productsForOrder);
 
-  // 🔹 Уникальные типы из продуктов конкретного заказа
   const uniqueTypes = [...new Set(productsForOrder.map(p => p.type))];
 
-  // 🔹 Фильтрация по типу
   const filteredProducts = selectedType
     ? productsForOrder.filter(p => p.type === selectedType)
     : productsForOrder;
@@ -73,13 +70,13 @@ const ProductsList = ({ orderId }) => {
     <Container fluid className="py-3">
       {!orderId &&
       <Row className="mb-3 align-items-center">
-        <Col md={1} className="mb-3">
+        <Col md={4} className="mb-3 ">
           <h3 className="mb-0">Продукты/{filteredProducts.length}</h3>
         </Col>
-        <Col md={1} className="mb-3">
+        <Col md={4} className="mb-3 text-start">
           <p className="mb-0 text-end text-muted">Тип:</p>
         </Col>
-        <Col md={3} className="mb-3 text-start">
+        <Col md={4} className="mb-3 text-start">
           <Form.Select value={selectedType} onChange={handleTypeChange}>
             <option value="">Все типы</option>
             {uniqueTypes.map((type, idx) => (
