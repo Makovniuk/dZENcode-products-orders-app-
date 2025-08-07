@@ -53,18 +53,18 @@ const OrdersList = () => {
     );
   }
 
-  const selectedOrder = orders.find(order => order.id === selectedOrderId);
+  const selectedOrder = orders.find(order => order.id == selectedOrderId);
 
   const quantityProducts = (orderId) => {
-    const productsCount = products.filter(p => p.order === orderId);
+    const productsCount = products.filter(p => p.order == orderId);
     return productsCount.length;
   };
 
   const getOrderTotal = (orderId, currency = 'USD') => {
-    const orderProducts = products.filter(p => p.order === orderId);
+    const orderProducts = products.filter(p => p.order == orderId);
   
     return orderProducts.reduce((sum, product) => {
-      const priceEntry = product.price?.find(p => p.symbol === currency);
+      const priceEntry = product.price?.find(p => p.symbol == currency);
       return sum + (priceEntry?.value || 0);
     }, 0);
   };
@@ -101,7 +101,7 @@ const OrdersList = () => {
         {selectedOrderId && (
         <div
             style={{
-              width: '700px',
+              width: '800px',
               maxHeight: '80vh',
               overflowY: 'auto',
               backgroundColor: '#fff',
@@ -114,7 +114,7 @@ const OrdersList = () => {
               orderId={selectedOrderId}
               title={selectedOrder?.title}
               onClose={() => setSelectedOrderId(null)}
-          />
+            />
         </div>
         )}
       </div>

@@ -8,31 +8,31 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import thunks from '../../store/services/products/thunks';
+import OrdersThunks from '../../store/services/orders/thunks';
 
 const ProductsList = ({ orderId }) => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.productsReducer);
-
+  const { orders } = useSelector((state) => state.ordersReducer);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedType, setSelectedType] = useState('');
 
-  const fetchProductsList = useCallback(async () => {
+  const fetchAllData = useCallback(async () => {
     setLoading(true);
-    setError(null);
-
     try {
+      await dispatch(OrdersThunks.fetchOrders());
       await dispatch(thunks.fetchProducts());
     } catch (err) {
-      setError(err.message || 'Ошибка при загрузке товаров');
+      setError(err.message || 'Ошибка при загрузке заказов');
     } finally {
       setLoading(false);
     }
   }, [dispatch]);
 
   useEffect(() => {
-    fetchProductsList();
-  }, [fetchProductsList]);
+    fetchAllData();
+  }, [fetchAllData]);
 
   const handleTypeChange = (e) => {
     setSelectedType(e.target.value);
@@ -65,6 +65,9 @@ const ProductsList = ({ orderId }) => {
       </Container>
     );
   }
+
+  const getOrderName = (orderIndex) => orders[orderIndex - 1]?.title || 'Неизвестный заказ';
+  const getOrderDate = (orderIndex) => orders[orderIndex - 1]?.data || 'Неизвестная дата';
 
   return (
     <Container fluid className="py-3">
@@ -101,10 +104,9 @@ const ProductsList = ({ orderId }) => {
             dateEnd={product.guarantee.end}
             usd={product.price.find(p => p.symbol === 'USD')?.value}
             uah={product.price.find(p => p.symbol === 'UAH')?.value}
-            groupName="Длинное предлинное длиннющее название группы"
-            user="—"
-            arrivalName="Длинное предлинное длиннющее название прихода"
-            arrivalDate={product.date}
+            groupName="Название группы"
+            arrivalName={getOrderName(product.order)}
+            arrivalDate={getOrderDate(product.order)}
           />
         ))
       )}

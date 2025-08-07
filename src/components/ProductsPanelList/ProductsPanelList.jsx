@@ -30,7 +30,7 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
   }, [fetchProductsList]);
 
   const filteredProducts = orderId
-    ? products.filter(product => product.order === orderId)
+    ? products.filter(product => product.order == orderId)
     : products;
 
   return (
@@ -71,7 +71,7 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
               <Col xs={1} className="text-center">
             <FaCircle color={product.status === 'Свободен' ? 'green' : 'orange'} size={15} />
              </Col>
-            <Col md={5} className="d-flex align-items-center gap-2 overflow-hidden">
+            <Col md={8} className="d-flex align-items-center gap-2 overflow-hidden">
               <img
                 src="https://i.pinimg.com/736x/96/5c/31/965c31197aa0d32ba5d46142e2d6fd9c.jpg"
                 alt="product"
@@ -80,16 +80,16 @@ const ProductsPanelList = ({ orderId, title, onClose }) => {
                 height="32"
               />
               <div className="flex-grow-1 text-truncate">
-                <div className="fw-semibold">{product.type}</div>
+                <div className="fw-semibold">{product.title}</div>
                 <div className="text-muted small text-truncate">SN: {product.serialNumber}</div>
               </div>
             </Col>
 
-            <Col xs={3}>
+            <Col xs={2}>
             <Badge bg={product.status === 'Свободен' ? 'success' : 'warning'}>{product.status}</Badge>
           </Col>
 
-            <Col md={3} className="text-end">
+            <Col md={1} className="text-end">
               <Button variant="light" size="sm" title="Удалить продукт">
                 <FaTrash />
               </Button>

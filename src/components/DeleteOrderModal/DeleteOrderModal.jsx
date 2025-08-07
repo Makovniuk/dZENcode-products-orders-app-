@@ -33,7 +33,6 @@ export default  function DeleteOrderModal({ show, handleClose, handleDelete, ite
            </Col>
           <Col>
             <div className="fw-bold text-truncate">{item}</div>
-            <div className="text-muted small">SN: {item.serial || '12.3456789'}</div>
           </Col>
         </Row>
       </Modal.Body>

@@ -6,8 +6,8 @@ import { FaCircle } from "react-icons/fa";
 
 export default function ProductsItem({
   status,
+  title,
   isNew,
-  type, 
   serialNumber, 
   dateStart, 
   dateEnd, 
@@ -33,7 +33,7 @@ export default function ProductsItem({
           />
           </Col>
           <Col xs={2}>
-            <div className="fw-bold">{type}</div>
+            <div className="fw-bold">{title}</div>
             <div className="text-muted small">{serialNumber}</div>
           </Col>
           <Col xs={1}>
