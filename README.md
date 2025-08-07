@@ -1,12 +1,38 @@
-# React + Vite
+# Vite React Project – Orders & Products
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📦 Описание
+Это веб-приложение, разработанное на **React + Vite**, предназначено для работы с заказами и товарами.  
+Основной стек: **React - JS - Redux Toolkit**, **Vite**, **Docker**, и хостинг через **Render.com**.
 
-Currently, two official plugins are available:
+## ⚙️ Функции
+- Просмотр списка заказов
+- Просмотр списка товаров
+- Просмот товаров каждого заказа
+- Отзывчивый интерфейс
+- Быстрая загрузка через Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Демо
+Приложение развёрнуто на Render:  
+🔗 https://dzencode-products-orders-app-00bz.onrender.com/
 
-## Expanding the ESLint configuration
+## 🛠 Установка и запуск
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Клонирование репозитория
+git clone https://github.com/Makovniuk/dZENcode-products-orders-app-
+cd dZENcode-products-orders-app-
+
+### 2. Запуск через Docker
+docker build -t my-vite-app .
+docker run -p 5173:5173 my-vite-app
+После этого открой http://localhost:5173
+
+## 📂  Используемые технологии
+React
+Vite
+Redux Toolkit
+Docker
+Render.com
+
+## 📌 Контакты
+Автор: Маковнюк Евгений 
+Email: mmmjekammm@gmail.com
